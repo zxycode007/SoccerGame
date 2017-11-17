@@ -216,7 +216,7 @@ namespace Game
         /// </summary>
         public void Disconnect()
         {
-            if (client.Connected)
+            if (client != null && client.Connected)
             {
                 client.Disconnect();
                 Debug.Log("Disconnect.....");

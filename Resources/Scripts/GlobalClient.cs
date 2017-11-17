@@ -19,6 +19,7 @@ public class GlobalClient
     static Game.KeyFrameManager keyManager;
     static Game.CommandManager commandManager;
     static Game.GamePlayerManager playerManager;
+    static ObjecPoolManager objectPoolManager;
     static Console console;
     //预置表
     public static Dictionary<string, GameObject> prefabData;
@@ -36,8 +37,11 @@ public class GlobalClient
         eventReceivers = new Dictionary<EventType, HashSet<GameContext>>();
         keyManager = new Game.KeyFrameManager();
         commandManager = new Game.CommandManager();
+        objectPoolManager = new ObjecPoolManager();
         //string path = Application.dataPath + "/Resources/Prefabs/";
         string path = "Prefabs/entity/";
+        ReadPrefabs(path);
+        path = "Prefabs/UI/ConsoleWindow/";
         ReadPrefabs(path);
         path = "UI/Textures/";
         ReadSprite(path);
@@ -62,7 +66,7 @@ public class GlobalClient
         return null;
     }
 
-    public static Console Debug
+    public static Console GetConsole
     {
         get
         {
@@ -203,6 +207,15 @@ public class GlobalClient
             }
             return cameraController;
         }
+    }
+
+    public static ObjecPoolManager GetObjectPoolManager()
+    {
+        if(objectPoolManager == null)
+        {
+            objectPoolManager = new ObjecPoolManager();
+        }
+        return objectPoolManager;
     }
 
     public static Game.PlayerController GetPlayerController()

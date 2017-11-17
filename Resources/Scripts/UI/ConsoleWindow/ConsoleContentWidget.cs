@@ -10,11 +10,21 @@ public class ConsoleContentWidget : MonoBehaviour
     public float defaultHeight = 400;
     public float curItemPos = 0;
     public float curContentPos = 0;
+    public int   maxItemCount = 10;
 
     void CalcNewPos()
     {
-        curItemPos += gridLayout.cellSize.y;
         RectTransform rt = GetComponent<RectTransform>();
+        if (transform.GetChildCount() > maxItemCount)
+        {
+            Transform oldItem = transform.GetChild(0);
+            oldItem.SetParent(GameObject.Find("Recycle").transform);
+            oldItem.gameObject.SetActive(false);
+            GlobalClient.GetObjectPoolManager().Recycle<GameObject>(oldItem.gameObject);
+        }else
+        {
+            curItemPos += gridLayout.cellSize.y;
+        }
         if (curItemPos > rt.sizeDelta.y)
         {               
             rt.sizeDelta = new Vector2(0, rt.sizeDelta.y + gridLayout.cellSize.y);
@@ -47,13 +57,20 @@ public class ConsoleContentWidget : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        maxItemCount = 20;
     }
 
     void CreateConsoleItem(string str, Color color, int size)
     {
-        GameObject item = GameObject.Instantiate(consoleItemPrefab);
+         
+        
+        GameObject item = GlobalClient.GetObjectPoolManager().Get<GameObject>();
+        if(item == null)
+        {
+            item = GameObject.Instantiate(consoleItemPrefab);
+        }
         item.transform.SetParent(transform);
+        item.SetActive(true);
         ConsoleItemWidget itemComp = item.GetComponent<ConsoleItemWidget>();
         itemComp.SetText(str);
         itemComp.SetColor(color);
