@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
+using Game;
 
 public class LoginMainWnd : MonoBehaviour
 {
@@ -76,6 +76,6 @@ public class LoginMainWnd : MonoBehaviour
         m_loginInfo.udpPort = int.Parse(m_udpPort.text);
         m_loginInfo.hostIp = m_hostIP.text;
         arg.info = m_loginInfo;
-        m_context.FireEvent(this, EventType.EVT_USER_LOGIN, arg);
+        m_context.FireEvent(this, Game.EventType.EVT_USER_LOGIN, arg);
     }
 }

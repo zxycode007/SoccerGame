@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
-
+using Game;
 
 /// <summary>
 /// 选择队伍场景
@@ -36,8 +36,8 @@ public class SelectTeamSceneState : BaseSceneState {
         m_bRunning = true;
         Team1Players = new List<Game.GamePlayer>();
         Team2Players = new List<Game.GamePlayer>();
-        GlobalClient.AddEventReceiver(EventType.EVT_SELECTTEAM_PLAYER_READY, m_context);
-        GlobalClient.AddEventReceiver(EventType.EVT_SELECTTEAM_TEAM_UPDATE, m_context);
+        GlobalClient.AddEventReceiver(Game.EventType.EVT_SELECTTEAM_PLAYER_READY, m_context);
+        GlobalClient.AddEventReceiver(Game.EventType.EVT_SELECTTEAM_TEAM_UPDATE, m_context);
         m_context.SelectTeamTeamUpdateHandler += OnTeamUpdateHandler;
         m_context.SelectTeamPlayerReadyHandler += OnReadyHandler;
         

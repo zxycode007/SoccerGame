@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
-
+using Game;
 
 public class LoginSceneState : BaseSceneState {
 
@@ -24,9 +24,9 @@ public class LoginSceneState : BaseSceneState {
 		public override void SceneStateBegin()
 		{
 			m_bRunning = true;
-            GlobalClient.AddEventReceiver(EventType.EVT_USER_LOGIN, m_context);
-            GlobalClient.AddEventReceiver(EventType.EVT_SERVER_ON_CONNECT, m_context);
-            GlobalClient.AddEventReceiver(EventType.EVT_TO_TEAM_SELECT, m_context);
+            GlobalClient.AddEventReceiver(Game.EventType.EVT_USER_LOGIN, m_context);
+            GlobalClient.AddEventReceiver(Game.EventType.EVT_SERVER_ON_CONNECT, m_context);
+            GlobalClient.AddEventReceiver(Game.EventType.EVT_TO_TEAM_SELECT, m_context);
             m_context.UserLoginHandler += OnLoginHandler;
             m_context.ServerOnConnectHandler += OnLoginToServerHandler;
             m_context.ToSelectTeamHandler += OnToSelectTeam;

@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+
+using Game;
  
 
 
@@ -11,14 +13,14 @@ public class GlobalClient
     static int tcpPort = 1255;
     static int udpPort = 1337;
 
-    static Game.CameraController cameraController;
-    static Game.NetManager netManager;
-    static Game.PlayerController playerController;
+    static CameraController cameraController;
+    static NetManager netManager;
+    static PlayerController playerController;
     static TimeManager timeManager;
-    static Game.GameManager gameManager;
-    static Game.KeyFrameManager keyManager;
-    static Game.CommandManager commandManager;
-    static Game.GamePlayerManager playerManager;
+    static GameManager gameManager;
+    static KeyFrameManager keyManager;
+    static CommandManager commandManager;
+    static GamePlayerManager playerManager;
     static ObjecPoolManager objectPoolManager;
     static Console console;
     //预置表
@@ -26,17 +28,17 @@ public class GlobalClient
     public static Dictionary<string, Sprite> spriteData;
     static Dictionary<string, ObjectFactory> factories;
     public static readonly Hashtable globalDataTable;
-    static Dictionary<EventType, HashSet<GameContext>> eventReceivers;
+    static Dictionary<Game.EventType, HashSet<GameContext>> eventReceivers;
     static GlobalClient()
     {
-        netManager = new Game.NetManager();
+        netManager = new NetManager();
         globalDataTable = new Hashtable();
         prefabData = new Dictionary<string, GameObject>();
         spriteData = new Dictionary<string, Sprite>();
         factories = new Dictionary<string, ObjectFactory>();
-        eventReceivers = new Dictionary<EventType, HashSet<GameContext>>();
-        keyManager = new Game.KeyFrameManager();
-        commandManager = new Game.CommandManager();
+        eventReceivers = new Dictionary<Game.EventType, HashSet<GameContext>>();
+        keyManager = new KeyFrameManager();
+        commandManager = new CommandManager();
         objectPoolManager = new ObjecPoolManager();
         //string path = Application.dataPath + "/Resources/Prefabs/";
         string path = "Prefabs/entity/";
@@ -45,9 +47,14 @@ public class GlobalClient
         ReadPrefabs(path);
         path = "UI/Textures/";
         ReadSprite(path);
+
+
+        ///初始化操作
+        objectPoolManager.Init();
     }
 
-    public static Dictionary<EventType, HashSet<GameContext>> EventReceivers
+
+    public static Dictionary<Game.EventType, HashSet<GameContext>> EventReceivers
     {
         get
         {
@@ -79,20 +86,20 @@ public class GlobalClient
 
     }
 
-    public static Game.GamePlayerManager PlayerManager
+    public static GamePlayerManager PlayerManager
     {
         
         get
         {
             if(playerManager == null)
             {
-                playerManager = new Game.GamePlayerManager();
+                playerManager = new GamePlayerManager();
             }
             return playerManager;
         }
     }
 
-    public static Game.KeyFrameManager KeyFrameManager
+    public static KeyFrameManager KeyFrameManager
     {
         get
         {
@@ -100,7 +107,7 @@ public class GlobalClient
         }
     }
 
-    public static Game.CommandManager CommandManager
+    public static CommandManager CommandManager
     {
         get
         {
@@ -156,7 +163,7 @@ public class GlobalClient
     }
 
 
-    public static Game.NetManager NetWorkManager
+    public static NetManager NetWorkManager
     {
         get
         {
@@ -164,13 +171,13 @@ public class GlobalClient
         }
     }
 
-    public static Game.GameManager GameManager
+    public static GameManager GameManager
     {
         get
         {
             if(gameManager==null)
             {
-                gameManager = Game.GameManager.instance;
+                gameManager = GameManager.instance;
             }
 
             return gameManager;
@@ -193,7 +200,7 @@ public class GlobalClient
         }
     }
 
-    public Game.CameraController CameraController
+    public CameraController CameraController
     {
         get
         {
@@ -202,7 +209,7 @@ public class GlobalClient
                 GameObject obj = GameObject.Find("GameManager");
                 if (obj != null)
                 {
-                    cameraController = obj.GetComponent<Game.CameraController>();
+                    cameraController = obj.GetComponent<CameraController>();
                 }
             }
             return cameraController;
@@ -218,25 +225,25 @@ public class GlobalClient
         return objectPoolManager;
     }
 
-    public static Game.PlayerController GetPlayerController()
+    public static PlayerController GetPlayerController()
     {
         if (playerController == null)
         {
             GameObject obj = GameObject.Find("GameManager");
             if (obj != null)
             {
-                playerController = obj.GetComponent<Game.PlayerController>();
+                playerController = obj.GetComponent<PlayerController>();
             }
         }
         return playerController;
     }
 
     //添加事件接收者
-    public static void AddEventReceiver(EventType evt, GameContext context)
+    public static void AddEventReceiver(Game.EventType evt, GameContext context)
     {
         if (eventReceivers == null)
         {
-            eventReceivers = new Dictionary<EventType, HashSet<GameContext>>();
+            eventReceivers = new Dictionary<Game.EventType, HashSet<GameContext>>();
         }
         if (eventReceivers.ContainsKey(evt) == false || eventReceivers[evt] == null)
         {
@@ -246,11 +253,11 @@ public class GlobalClient
         eventReceivers[evt].Add(context);
     }
 
-    public static void RemoveEventReceiver(EventType evt, GameContext context)
+    public static void RemoveEventReceiver(Game.EventType evt, GameContext context)
     {
         if (eventReceivers == null)
         {
-            eventReceivers = new Dictionary<EventType, HashSet<GameContext>>();
+            eventReceivers = new Dictionary<Game.EventType, HashSet<GameContext>>();
         }
         if (!eventReceivers.ContainsKey(evt))
             return;

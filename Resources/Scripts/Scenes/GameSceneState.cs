@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Util;
 using System;
+using Game;
 
 public class GameSceneState : BaseSceneState
 {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Util;
+using Game;
 public class MainLoop : MonoBehaviour
 {
     private SceneController m_sceneController;
