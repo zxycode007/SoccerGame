@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConsoleItemWidget : MonoBehaviour {
+public class ConsoleItemWidget : MonoBehaviourEx {
 
     public Text itemText;
 

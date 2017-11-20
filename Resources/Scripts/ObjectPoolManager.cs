@@ -13,10 +13,18 @@ public abstract class ObjectPool
     public  abstract object Dequeue();
 
     public  abstract int Size();
+
+    public abstract void Reset();
+
+    public abstract object NewObject();
     
 }
 
-public class ObjectPoolImpl<T> : ObjectPool  where T : new()
+/// <summary>
+/// 基础类型缓存池实现
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class ObjectPoolImpl<T> : ObjectPool where T : class, MonoBehaviourEx, new()
 {
     
     Queue<T> recycleQueue;
@@ -47,6 +55,20 @@ public class ObjectPoolImpl<T> : ObjectPool  where T : new()
         return recycleQueue.Count;
     }
 
+
+    public override object NewObject()
+    {
+        object ret = new T();
+        return ret;
+    }
+
+    public override void Reset()
+    {
+        
+    }
+
+   
+
     
    
 }
@@ -62,17 +84,22 @@ public class ObjecPoolManager
         m_pools = new Dictionary<string, ObjectPool>();
     }
 
-    public T Get<T>()
+    public T Get<T>() where T : class, MonoBehaviourEx, new()
     {
         string objectName = typeof(T).Name;
-        if(m_pools.ContainsKey(objectName) && m_pools[objectName].Size() > 0)
+        if(!m_pools.ContainsKey(objectName) )
         {
+            if(m_pools[objectName].Size() > 0)
             return (T)m_pools[objectName].Dequeue();
+        }else
+        {
+            m_pools[objectName] = new ObjectPoolImpl<T>();
+            return (T)m_pools[objectName].NewObject();
         }
         return default(T);
     }
 
-    public void Recycle<T>(T obj) where T : new()
+    public void Recycle<T>(T obj) where T : class, MonoBehaviourEx, new()
     {
         
         Type objType = typeof(T);
