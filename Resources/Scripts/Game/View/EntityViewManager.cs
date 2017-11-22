@@ -105,7 +105,7 @@ namespace Game
             obj.Create(charData, this, Pos, rotation);
             viewOjbList.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicManager.gameObjList.Add(obj.gameObj);
+            _logicManager.entities.Add(obj.gameObj);
         }
 
         
@@ -122,7 +122,7 @@ namespace Game
             viewOjbList.Add(obj);
             _myTeamBoys.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicManager.gameObjList.Add(obj.gameObj);
+            _logicManager.entities.Add(obj.gameObj);
             CurViewObj = obj;
         }
 
@@ -148,7 +148,7 @@ namespace Game
             obj.Create(charData, this,Pos, rotation);
             viewOjbList.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicManager.gameObjList.Add(obj.gameObj);
+            _logicManager.entities.Add(obj.gameObj);
         }
 
         /// <summary>
