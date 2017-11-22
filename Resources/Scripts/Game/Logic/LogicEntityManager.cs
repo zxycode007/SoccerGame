@@ -7,17 +7,15 @@ namespace Game
      
 
     /// <summary>
-    /// 逻辑层，逻辑更新在这里处理
+    /// 逻辑层管理器
     /// </summary>
-    public class GameMap
+    public class LogicEntityManager
     {      
-        public int curRoleId = 0;
         //主控玩家，主场
         public bool isHostPlayer = false;
         //游戏对象列表
-        public List<GameObj> gameObjList = new List<GameObj>();
-        public GameObj curObj;
-        private NetManager _netManager;
+        public List<LogicEntity> entities = new List<LogicEntity>();
+        public LogicEntity curObj;
         private GameContext context;
 
         
@@ -31,21 +29,6 @@ namespace Game
               
         }
 
-        public NetManager netManager
-        {
-            get
-            {
-                return _netManager;
-            }
-        }
-
-        public void InitNet(string ip, int tcpPort, int udpPort)
-        {
-            _netManager = GlobalClient.NetWorkManager;
-            netManager.SetIpInfo(ip, tcpPort, udpPort);
-            netManager.InitClient();
-        }
-
         /// <summary>
         /// 来自本地客户端的输入命令
         /// </summary>
@@ -54,9 +37,9 @@ namespace Game
         public void InputCmd(Cmd cmd, string param)
         {
             //封装关键帧数据
-            KeyData keyData = new KeyData(cmd, param, curRoleId);
+            KeyData keyData = new KeyData(cmd, param, GlobalClient.NetWorkManager.ClientID);
             //100毫秒向服务器发一次
-            _netManager.AddKeyPack(keyData);
+            GlobalClient.NetWorkManager.AddKeyPack(keyData);
         }
 
         /// <summary>
@@ -64,13 +47,13 @@ namespace Game
         /// </summary>
         /// <param name="ID">玩家对象ID</param>
         /// <returns></returns>
-        public GameObj GetPlayerObj(int id)
+        public LogicEntity GetPlayerObj(int id)
         {
-            for (int i = 0; i < gameObjList.Count; ++i)
+            for (int i = 0; i < entities.Count; ++i)
             {
-                if (gameObjList[i].ID == id)
+                if (entities[i].ID == id)
                 {
-                    return gameObjList[i];
+                    return entities[i];
                 }
             }
             return null;
@@ -81,11 +64,11 @@ namespace Game
             switch(cmd)
             {
                 case Cmd.UseSkill:
-                    for (int i = 0; i < gameObjList.Count; ++i)
+                    for (int i = 0; i < entities.Count; ++i)
                     {
-                        if(gameObjList[i].mCharData.roleId == roleId)
+                        if(entities[i].mCharData.roleId == roleId)
                         {
-                            (gameObjList[i] as Player).DoSkill(int.Parse(param));
+                            (entities[i] as CreatureEntity).DoSkill(int.Parse(param));
                         }
                     }
                     break;
@@ -95,14 +78,14 @@ namespace Game
                     break;
                 case Cmd.UnitMoveBegin:
                     {
-                        for(int i=0; i<gameObjList.Count; i++)
+                        for(int i=0; i<entities.Count; i++)
                         {
                             //单位名字和玩家ID要对应上
-                            if(gameObjList[i].mCharData.roleId == roleId && gameObjList[i].mCharData.name == param)
+                            if(entities[i].mCharData.roleId == roleId && entities[i].mCharData.name == param)
                             {
-                                if (GlobalClient.GameManager.viewMap.ViewObjMap.ContainsKey(gameObjList[i].ID))
+                                if (GlobalClient.GameManager.ViewManager.ViewObjMap.ContainsKey(entities[i].ID))
                                 {
-                                    Actor ac = GlobalClient.GameManager.viewMap.ViewObjMap[gameObjList[i].ID].actor;
+                                    Actor ac = GlobalClient.GameManager.ViewManager.ViewObjMap[entities[i].ID].actor;
                                     UnitMoveBeginEvtArg arg = new UnitMoveBeginEvtArg();
                                     arg.actor = ac;
                                     context.FireEvent(this, EventType.EVT_UNIT_MOVE_BEGIN, arg);
@@ -115,15 +98,15 @@ namespace Game
                     break;
                 case Cmd.UnitMoveEnd:
                     {
-                        for (int i = 0; i < gameObjList.Count; i++)
+                        for (int i = 0; i < entities.Count; i++)
                         {
                             //单位名字和玩家ID要对应上
-                            if (gameObjList[i].mCharData.roleId == roleId && gameObjList[i].mCharData.name == param)
+                            if (entities[i].mCharData.roleId == roleId && entities[i].mCharData.name == param)
                             {
 
-                                if (GlobalClient.GameManager.viewMap.ViewObjMap.ContainsKey(gameObjList[i].ID))
+                                if (GlobalClient.GameManager.ViewManager.ViewObjMap.ContainsKey(entities[i].ID))
                                 {
-                                    Actor ac = GlobalClient.GameManager.viewMap.ViewObjMap[gameObjList[i].ID].actor;
+                                    Actor ac = GlobalClient.GameManager.ViewManager.ViewObjMap[entities[i].ID].actor;
                                     UnitMoveEndEvtArg arg = new UnitMoveEndEvtArg();
                                     arg.actor = ac;
                                     context.FireEvent(this, EventType.EVT_UNIT_MOVE_END, arg);
@@ -145,12 +128,12 @@ namespace Game
         public void DoCmd(KeyData keyData)
         {
             //Debug.LogError("执行关键帧 "+keyData.ToString());
-            DoCmd(keyData.cmd, keyData.data, keyData.roleId);
+            DoCmd(keyData.cmd, keyData.data, keyData.clientId);
         }
 
         public void Init()
         {
-            gameObjList = new List<GameObj>();
+            entities = new List<LogicEntity>();
              
             context = new GameContext();
         }
@@ -159,9 +142,9 @@ namespace Game
         {
             
             //游戏对象本地更新
-            for (int i = 0; i < gameObjList.Count; ++i)
+            for (int i = 0; i < entities.Count; ++i)
             {
-                gameObjList[i].Update();
+                entities[i].Update();
             }
            
         }

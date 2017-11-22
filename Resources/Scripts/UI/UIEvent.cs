@@ -16,21 +16,21 @@ public class UIEvent : MonoBehaviour {
 
     public void OnClickConnect()
     {
-        if (Game.GameManager.instance.NetManager.IsConnected() == false)
+        if (GlobalClient.NetWorkManager.IsConnected() == false)
         {
-            Game.GameManager.instance.NetManager.Connect();
+            GlobalClient.NetWorkManager.Connect();
         }
     }
 
     public void OnClickReady()
     {
-        Game.GameManager.instance.NetManager.Ready();
+        GlobalClient.NetWorkManager.Ready();
         return;
     }
 
     public void OnClickQuit()
     {
-        Game.GameManager.instance.NetManager.Disconnect();
+        GlobalClient.NetWorkManager.Disconnect();
         Application.Quit();
     }
 }

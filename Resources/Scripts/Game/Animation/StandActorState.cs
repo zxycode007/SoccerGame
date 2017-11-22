@@ -8,7 +8,7 @@ namespace Game
     {
         
         
-        public StandActorState(Player playerObj):base(playerObj)
+        public StandActorState(CreatureEntity playerObj):base(playerObj)
         {
             m_stateName = "StandActorState";
             m_state = ActorState.STAND;

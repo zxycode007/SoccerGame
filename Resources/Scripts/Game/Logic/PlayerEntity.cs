@@ -3,9 +3,9 @@ using System.Collections;
 
 namespace Game
 {
-    public class MePlayer : Player
+    public class PlayerEntity : CreatureEntity
     {
-        public override void Init(CharData charData, GameMap gameMap)
+        public override void Init(CharData charData, LogicEntityManager gameMap)
         {
             base.Init(charData, gameMap);
             _gameMap.curObj = this;

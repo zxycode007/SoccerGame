@@ -12,8 +12,8 @@ namespace Game
     public class KeyFrame
     {
         //玩家ID
-        int  _playerId;
-        int _playerObjId;
+        int  _clientId;
+        int _playerEntityId;
         //按键参数
         byte _bMoved;
         byte _shotPower;
@@ -22,27 +22,27 @@ namespace Game
         //其它参数
         string _param;
 
-        public int PlayerOBjcectID
+        public int PlayerEntityID
         {
             get
             {
-                return _playerObjId;
+                return _playerEntityId;
             }
             set
             {
-                _playerObjId = value;
+                _playerEntityId = value;
             }
         }
 
-        public int PlayerID
+        public int ClientID
         {
             get
             {
-                return _playerId;
+                return _clientId;
             }
             set
             {
-                _playerId = value;
+                _clientId = value;
             }
         }
 
@@ -109,8 +109,8 @@ namespace Game
         public void Parse(string data)
         {
             string[] tmp = data.Split('#');
-            _playerId = int.Parse(tmp[0]);
-            _playerObjId = int.Parse(tmp[1]);
+            _clientId = int.Parse(tmp[0]);
+            _playerEntityId = int.Parse(tmp[1]);
             _bMoved = byte.Parse(tmp[2]);
             _shotPower = byte.Parse(tmp[3]);
             _passPower = byte.Parse(tmp[4]);
@@ -118,10 +118,10 @@ namespace Game
             _param = tmp[6];
         }
 
-        public KeyFrame(int playerId,int playerObjId, byte bMoved, byte shotPower, byte passPower, byte stolenPower, string param)
+        public KeyFrame(int clentID,int entityID, byte bMoved, byte shotPower, byte passPower, byte stolenPower, string param)
         {
-            _playerObjId = playerObjId;
-            _playerId = playerId;
+            _playerEntityId = entityID;
+            _clientId = clentID;
             _bMoved = bMoved;
             _shotPower = shotPower;
             _passPower = passPower;
@@ -138,8 +138,8 @@ namespace Game
             string[] tmpStr = dataStr.Split('#');
             try
             {
-                _playerId = int.Parse(tmpStr[0]);
-                _playerObjId = int.Parse(tmpStr[1]);
+                _clientId = int.Parse(tmpStr[0]);
+                _playerEntityId = int.Parse(tmpStr[1]);
                 _bMoved = byte.Parse(tmpStr[2]);
                 _shotPower = byte.Parse(tmpStr[3]);
                 _passPower = byte.Parse(tmpStr[4]);
@@ -160,7 +160,7 @@ namespace Game
         /// <returns></returns>
         public override string ToString()
         {
-            return _playerId.ToString() + "#" + _playerObjId.ToString() + "#" + _bMoved.ToString() + "#" + _shotPower.ToString() + "#" + _passPower.ToString() + "#" + _stolenPower.ToString() + "#" + _param;
+            return _clientId.ToString() + "#" + _playerEntityId.ToString() + "#" + _bMoved.ToString() + "#" + _shotPower.ToString() + "#" + _passPower.ToString() + "#" + _stolenPower.ToString() + "#" + _param;
         }
     }
 
@@ -249,8 +249,7 @@ namespace Game
                     
 
                 }
-            }  //推进游戏逻辑更新
-            GlobalClient.GameManager.viewMap.Update();
+            } 
            
         }
 
@@ -281,14 +280,14 @@ namespace Game
                 if(kf.isMoved > 0)
                 {
                     //移动
-                    for (int j = 0; j < GlobalClient.GameManager.viewMap.LogicMap.gameObjList.Count; ++j)
+                    for (int j = 0; j < GlobalClient.GameManager.LogicManager.gameObjList.Count; ++j)
                     {
-                        if (GlobalClient.GameManager.viewMap.LogicMap.gameObjList[j].mCharData.roleId == kf.PlayerID)
+                        if (GlobalClient.GameManager.LogicManager.gameObjList[j].mCharData.roleId == kf.ClientID)
                         {
                             //(GlobalClient.GameManager.viewMap.LogicMap.gameObjList[i] as Player).DoSkill(int.Parse(param));
                             string msg = string.Format("isMoved{0}, shotPower{1}, passPower{2}, stolenPower{3}, angle{4}", kf.isMoved, kf.ShotPower, kf.PassPower, kf.StolenPower, kf.OtherParam);
                             //Debug.LogWarning(msg);
-                            MoveCommand cmd = new MoveCommand(kf.PlayerOBjcectID, float.Parse(kf.OtherParam));
+                            MoveCommand cmd = new MoveCommand(kf.PlayerEntityID, float.Parse(kf.OtherParam));
                             GlobalClient.CommandManager.AddCommand(cmd);
                         }
                     }

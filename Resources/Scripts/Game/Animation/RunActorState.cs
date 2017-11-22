@@ -7,7 +7,7 @@ namespace Game
     {
         Vector3 m_oldPos;
         Vector3 m_target;
-        public RunActorState(Player playerObj):base(playerObj)
+        public RunActorState(CreatureEntity playerObj):base(playerObj)
         {
             m_stateName = "RunActorState";
             m_state = ActorState.RUN1;

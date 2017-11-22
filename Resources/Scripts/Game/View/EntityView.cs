@@ -4,28 +4,27 @@ using System.Collections;
 namespace Game
 {
     //视图对象
-    public class ViewObj
+    public class EntityView
     {
         //游戏逻辑对象
-        public GameObj gameObj;
+        public LogicEntity gameObj;
         public Actor actor;
         
-        protected ViewMap _viewMap;
+        protected EntityViewManager _viewMap;
 
         //U3d本地对象
         public GameObject gameGo;
         //U3d本地Transform
         protected Transform gameTrans;
-
         protected GameContext context;
 
         
 
-        public virtual void Create(CharData charData, ViewMap viewMap, Vector3 Pos, Quaternion rotation)
+        public virtual void Create(CharData charData, EntityViewManager viewMap, Vector3 Pos, Quaternion rotation)
         {
             _viewMap = viewMap;
-            gameObj = new GameObj();
-            gameObj.Init(charData, viewMap.LogicMap);
+            gameObj = new LogicEntity();
+            gameObj.Init(charData, GlobalClient.GameManager.LogicManager);
             //gameGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
             GameObject obj = GlobalClient.prefabData["PlayerActor1"];
             gameGo = GameObject.Instantiate(obj, Pos, rotation) as GameObject;

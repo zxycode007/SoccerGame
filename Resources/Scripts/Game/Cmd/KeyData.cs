@@ -14,12 +14,12 @@ namespace Game
         public Cmd cmd;
         public string data;
         //用户ID
-        public int roleId;
-        public KeyData(Cmd cmd, string data, int roleId)
+        public int clientId;
+        public KeyData(Cmd cmd, string data, int clientID)
         {
             this.cmd = cmd;
             this.data = data;
-            this.roleId = roleId;
+            this.clientId = clientID;
         }
 
         public KeyData(string dataStr)
@@ -27,13 +27,13 @@ namespace Game
             string[] str = dataStr.Split('#');
             this.cmd = (Cmd)int.Parse(str[0]);
             this.data = str[1];
-            this.roleId = int.Parse(str[2]);
+            this.clientId = int.Parse(str[2]);
         }
 
         public override string ToString()
         {
             int iCmd = (int)cmd;
-            string str = iCmd.ToString() + "#" + data +"#" + roleId.ToString();
+            string str = iCmd.ToString() + "#" + data +"#" + clientId.ToString();
             return str;
         }
     }

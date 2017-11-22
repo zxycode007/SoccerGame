@@ -8,7 +8,7 @@ namespace Game
 
         float m_angle;
         // Use this for initialization
-        public ShotActorState(Player playerObj, float angle):base(playerObj)
+        public ShotActorState(CreatureEntity playerObj, float angle):base(playerObj)
             
         {
             m_stateName = "PassActorState";

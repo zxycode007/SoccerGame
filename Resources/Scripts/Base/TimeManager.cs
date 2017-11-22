@@ -8,6 +8,7 @@ using Util;
 
 /// <summary>
 /// 时间管理器
+/// 游戏更新暂时放这里控制
 /// </summary>
 public class TimeManager : MonoBehaviour {
 

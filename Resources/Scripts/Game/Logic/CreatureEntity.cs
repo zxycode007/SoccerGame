@@ -6,7 +6,7 @@ namespace Game
     /// <summary>
     /// 球员
     /// </summary>
-    public class Player : GameObj
+    public class CreatureEntity : LogicEntity
     {
         /// <summary>
         /// 当前角色状态
@@ -27,7 +27,7 @@ namespace Game
             }
         }
 
-        public override void Init(CharData charData, GameMap gameMap)
+        public override void Init(CharData charData, LogicEntityManager gameMap)
         {
             base.Init(charData, gameMap);
             _mActorState = new StandActorState(this);

@@ -33,7 +33,7 @@ namespace Game
                 return;
             if(!m_bRunning)
             {
-                 Player playerObj = GlobalClient.GameManager.viewMap.LogicMap.GetPlayerObj(m_playerID) as Player;
+                CreatureEntity playerObj = GlobalClient.GameManager.LogicManager.GetPlayerObj(m_clientID) as CreatureEntity;
                  if (playerObj != null)
                  {
                      //设置为站立状态

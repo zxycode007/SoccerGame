@@ -2,9 +2,19 @@
 using System.Collections;
 using Util;
 using Game;
+
+/// <summary>
+/// 游戏主循环
+/// </summary>
 public class MainLoop : MonoBehaviour
 {
+    /// <summary>
+    /// 场景控制器
+    /// </summary>
     private SceneController m_sceneController;
+    /// <summary>
+    /// 游戏环境上下文
+    /// </summary>
     private GameContext m_context;
     void Awake()
     {
@@ -30,7 +40,7 @@ public class MainLoop : MonoBehaviour
 
     void Destory()
     {
-        Game.GameManager.instance.NetManager.Disconnect();
+        GlobalClient.NetWorkManager.Disconnect();
        
         Debug.Log("结束游戏");
     }

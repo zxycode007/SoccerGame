@@ -15,10 +15,14 @@ namespace Game
         private string _ip = "127.0.0.1";
         private int _tcpPort = 1255;
         private int _udpPort = 1337;
+        //底层通信对象
         AsycUdpClient client;
+        //关键帧数据包
         private List<string> keyPack = new List<string>();
         GameContext m_context;
 
+        //服务器分配的ID
+        private int clientID = -1;
         public bool isInitialized = false;
 
         public NetManager()
@@ -66,17 +70,17 @@ namespace Game
         /// </summary>
         public void SycMePos()
         {
-            for (int i = 0; i < GameManager.instance.viewMap.MyTeam.Count; i++ )
+            for (int i = 0; i < GameManager.instance.ViewManager.MyTeam.Count; i++ )
             {
                 //Vector3 pos = GameManager.instance.viewMap.CurViewObj.Pos;
                 //Vector3 angle = GameManager.instance.viewMap.CurViewObj.EulerAngles;
                 //我方每一个对象的位置角度发过去
-                Vector3 pos = GameManager.instance.viewMap.MyTeam[i].Pos;
-                Vector3 angle = GameManager.instance.viewMap.MyTeam[i].EulerAngles;
-                int name = GameManager.instance.viewMap.MyTeam[i].gameObj.ID;
+                Vector3 pos = GameManager.instance.ViewManager.MyTeam[i].Pos;
+                Vector3 angle = GameManager.instance.ViewManager.MyTeam[i].EulerAngles;
+                int name = GameManager.instance.ViewManager.MyTeam[i].gameObj.ID;
                 MessageBuffer msgBuf = new MessageBuffer();
                 msgBuf.WriteInt(cProto.SYNC_POS);
-                msgBuf.WriteInt(GameManager.instance.viewMap.CurViewObj.PlayerID);
+                msgBuf.WriteInt(GameManager.instance.ViewManager.CurViewObj.PlayerID);
                 msgBuf.WriteInt(name);
                 string cPos = string.Format("{0}#{1}#{2}#{3}#{4}#{5}", pos.x, pos.y, pos.z, angle.x, angle.y, angle.z);
                 msgBuf.WriteString(cPos);
@@ -133,7 +137,7 @@ namespace Game
         {
             MessageBuffer msgBuf = new MessageBuffer();
             msgBuf.WriteInt(cProto.READY);
-            msgBuf.WriteInt(GameManager.instance.viewMap.LogicMap.curRoleId);
+            msgBuf.WriteInt(clientID);
             Send(msgBuf);
         }
 
@@ -242,11 +246,12 @@ namespace Game
             {
                 case cProto.CONNECT:
                     {
-                        int roleId = msg.ReadInt();
-                        GameManager.instance.viewMap.LogicMap.curRoleId = roleId;
-                        Debug.Log("玩家,id = " + roleId);
+                        int id = msg.ReadInt();
+                        clientID = id;
+                        Debug.Log("玩家客户端id = " + id);
+                        //服务器已连接
                         ServerOnConnectArg arg = new ServerOnConnectArg();
-                        arg.PlayerID = roleId;
+                        arg.ClientID = id;
                         m_context.FireEvent(this, EventType.EVT_SERVER_ON_CONNECT, arg);
 
                     }
@@ -258,7 +263,7 @@ namespace Game
                     int cRoleId = msg.ReadInt();
                     int gameObjID = msg.ReadInt();
                     string pos = msg.ReadString();
-                    GameManager.instance.viewMap.SyncPos(cRoleId, pos, gameObjID);
+                    GameManager.instance.ViewManager.SyncPos(cRoleId, pos, gameObjID);
                     //Debug.Log(string.Format("玩家 {0} ,pos = {1}", cRoleId ,pos));
                     break;
                     //同步关键帧k
@@ -303,7 +308,7 @@ namespace Game
                     //读取玩家列表
                     string players = msg.ReadString();
                     //创建所有玩家
-                    GameManager.instance.viewMap.CreateAllPlayer(players);
+                    GameManager.instance.ViewManager.CreateAllPlayer(players);
                     //初始化服务器关键帧为1
                     GlobalClient.KeyFrameManager.serverKeyFrameNo = 0;
                     //每50毫秒向服务器发送位置信息
@@ -311,6 +316,14 @@ namespace Game
                     //每100毫秒向服务器关键帧数据
                    // TimerHeap.AddTimer(0, 100, SycKey);
                     break;
+            }
+        }
+
+        public int ClientID
+        {
+            get
+            {
+                return clientID;
             }
         }
 

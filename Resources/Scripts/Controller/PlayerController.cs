@@ -114,7 +114,7 @@ namespace Game
                 UnitMoveEndEvtArg arg = new UnitMoveEndEvtArg();
                 arg.actor = actor;
                 context.FireEvent(this, EventType.EVT_UNIT_MOVE_END, arg);
-                GlobalClient.GameManager.viewMap.LogicMap.InputCmd(Cmd.UnitMoveEnd, actor.viewObj.gameObj.mCharData.name);
+                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveEnd, actor.viewObj.gameObj.mCharData.name);
             }
 
 
@@ -131,7 +131,7 @@ namespace Game
                 UnitMoveBeginEvtArg arg = new UnitMoveBeginEvtArg();
                 arg.actor = actor;
                 context.FireEvent(this, EventType.EVT_UNIT_MOVE_BEGIN, arg);
-                GlobalClient.GameManager.viewMap.LogicMap.InputCmd(Cmd.UnitMoveBegin, actor.viewObj.gameObj.mCharData.name);
+                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveBegin, actor.viewObj.gameObj.mCharData.name);
             }
 
         }
@@ -163,7 +163,7 @@ namespace Game
                         {
                             target = hit.transform;
                             moveSpeed = actor.speed;
-                            GlobalClient.GameManager.viewMap.CurViewObj = actor.viewObj;
+                            GlobalClient.GameManager.ViewManager.CurViewObj = actor.viewObj;
                             Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.teamNo, obj.name));
                         }
                     }else
@@ -172,7 +172,7 @@ namespace Game
                         {
                             target = hit.transform;
                             moveSpeed = actor.speed;
-                            GlobalClient.GameManager.viewMap.CurViewObj = actor.viewObj;
+                            GlobalClient.GameManager.ViewManager.CurViewObj = actor.viewObj;
                             Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.teamNo, obj.name));
                         }
                     }

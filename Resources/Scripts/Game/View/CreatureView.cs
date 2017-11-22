@@ -6,15 +6,15 @@ namespace Game
     /// <summary>
     /// 其它玩家对象
     /// </summary>
-    public class ViewPlayer : ViewObj
+    public class CreatureView : EntityView
     {
 
 
-        public override void Create(CharData charData, ViewMap viewMap, Vector3 Pos, Quaternion rotation)
+        public override void Create(CharData charData, EntityViewManager viewMap, Vector3 Pos, Quaternion rotation)
         {
             _viewMap = viewMap;
-            gameObj = new Player();
-            gameObj.Init(charData, viewMap.LogicMap);
+            gameObj = new CreatureEntity();
+            gameObj.Init(charData, GlobalClient.GameManager.LogicManager);
             GameObject obj = GlobalClient.prefabData["PlayerActor1"];
             gameGo = GameObject.Instantiate(obj, Pos, rotation) as GameObject;
             
@@ -41,7 +41,7 @@ namespace Game
         public override void Update()
         {
             base.Update();
-            Player player = gameObj as Player;
+            CreatureEntity player = gameObj as CreatureEntity;
             if(player.State.GetState() == ActorState.RUN1)
             {
                 gameGo.transform.position = gameObj.Position;

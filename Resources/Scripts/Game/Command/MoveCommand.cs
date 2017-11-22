@@ -37,7 +37,7 @@ namespace Game
          {
              m_commandName = "MoveCommand";
              m_commandType = ECommandType.Move;
-             Player playerObj = GlobalClient.GameManager.viewMap.LogicMap.GetPlayerObj(m_playerID) as Player;
+             CreatureEntity playerObj = GlobalClient.GameManager.LogicManager.GetPlayerObj(m_clientID) as CreatureEntity;
              if(playerObj != null)
              {
                  Quaternion rot = Quaternion.Euler(Vector3.up * angle);
@@ -50,7 +50,7 @@ namespace Game
         public override void run()
         {
             base.run();
-            Player playerObj = GlobalClient.GameManager.viewMap.LogicMap.GetPlayerObj(m_playerID) as Player;
+            CreatureEntity playerObj = GlobalClient.GameManager.LogicManager.GetPlayerObj(m_clientID) as CreatureEntity;
             if(playerObj != null)
             {
                 playerObj.Rotation = m_direction;
@@ -73,7 +73,7 @@ namespace Game
                 return;
             if (!m_bRunning)
             {
-                Player playerObj = GlobalClient.GameManager.viewMap.LogicMap.GetPlayerObj(m_playerID) as Player;
+                CreatureEntity playerObj = GlobalClient.GameManager.LogicManager.GetPlayerObj(m_clientID) as CreatureEntity;
                 if (playerObj != null)
                 {
                     //设置为移动状态

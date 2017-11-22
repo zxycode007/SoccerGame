@@ -17,11 +17,11 @@ namespace Game
         /// <summary>
         /// 玩家ID
         /// </summary>
-        protected int m_playerID;
+        protected int m_clientID;
 
         public BaseCommand()
         {
-            m_playerID = GlobalClient.GameManager.viewMap.LogicMap.curRoleId;
+            m_clientID = GlobalClient.NetWorkManager.ClientID;
             m_commandName = "BaseCommand";
             m_bFinished = false;
             m_bRunning = false;
@@ -30,7 +30,7 @@ namespace Game
 
         public BaseCommand(int playerID)
         {
-            m_playerID = playerID;
+            m_clientID = playerID;
             m_commandName = "BaseCommand";
             m_bFinished = false;
             m_bRunning = false;

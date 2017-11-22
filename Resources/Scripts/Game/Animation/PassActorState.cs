@@ -8,7 +8,7 @@ namespace Game
 
         Vector3 m_passDir;
         // Use this for initialization
-        public PassActorState(Player playerObj, Vector3 dir):base(playerObj)
+        public PassActorState(CreatureEntity playerObj, Vector3 dir):base(playerObj)
              
         {
             m_stateName = "PassActorState";

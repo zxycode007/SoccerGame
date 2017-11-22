@@ -90,7 +90,7 @@ namespace Game
 
     public class ServerOnConnectArg : EventArgs
     {
-        public int PlayerID = -1;
+        public int ClientID = -1;
     }
 
     public class ToSelectTeamArg : EventArgs

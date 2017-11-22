@@ -8,61 +8,67 @@ using Util;
 using System;
 using Game;
 
-public class GameSceneState : BaseSceneState
+namespace Game
 {
 
-    private GameContext m_context;
- 
-    public GameSceneState(SceneController controller)
-        : base(controller)
-		{
-			this.m_sceneName = "gameScene1";
-			this.m_eState = ESceneState.E_SCENE_STATE_GAME;
-			SceneManager.sceneLoaded += OnSceneLoaded;
+    public class GameSceneState : BaseSceneState
+    {
+
+        private GameContext m_context;
+
+
+        public GameSceneState(SceneController controller)
+            : base(controller)
+        {
+            this.m_sceneName = "gameScene1";
+            this.m_eState = ESceneState.E_SCENE_STATE_GAME;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             m_context = new GameContext();
             UnityEngine.Random.InitState(1);
-		
-		}
 
-    public override void SceneStateBegin()
-    {
-        m_bRunning = true;
-        
-    }
+        }
 
-
-    public void OnQuitGame()
-    {
-        GlobalClient.NetWorkManager.Disconnect();
-        Application.Quit();
-    }
-
-     
-
-    void OnDestroy()
-    {
-        
-    }
-
-    
-		
-
-    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        if (scene.name == m_sceneName)
+        public override void SceneStateBegin()
         {
-            Debug.Log("场景加载完成!");
-            m_bLoaded = true;
+            m_bRunning = true;
+
+        }
+
+
+        public void OnQuitGame()
+        {
+            GlobalClient.NetWorkManager.Disconnect();
+            Application.Quit();
+        }
+
+
+
+        void OnDestroy()
+        {
+
+        }
+
+
+
+
+        void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == m_sceneName)
+            {
+                Debug.Log("场景加载完成!");
+                m_bLoaded = true;
+            }
+        }
+
+        public override void SceneStateEnd()
+        {
+
+        }
+
+        public override void SceneStateUpdate()
+        {
+
         }
     }
-
-    public override void SceneStateEnd()
-    {
-
-    }
-
-    public override void SceneStateUpdate()
-    {
-       
-    }
 }
+

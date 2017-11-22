@@ -37,9 +37,9 @@ namespace Game
         /// <summary>
         /// 玩家操控逻辑对象
         /// </summary>
-        protected Player m_playerObj;
+        protected CreatureEntity m_playerObj;
 
-        public BaseActorState(Player playerObj)
+        public BaseActorState(CreatureEntity playerObj)
         {
             //默认持续一个逻辑帧
             m_duration = 1;
@@ -50,7 +50,7 @@ namespace Game
         }
 
 
-        public Player PlayerObj
+        public CreatureEntity PlayerObj
         {
             get
             {

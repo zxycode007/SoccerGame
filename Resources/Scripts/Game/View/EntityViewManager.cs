@@ -6,11 +6,11 @@ using System;
 namespace Game
 {
     /// <summary>
-    /// ViewMap管理视图层的对象
+    /// 视图层管理器
     /// </summary>
-    public class ViewMap
+    public class EntityViewManager
     {
-        private GameMap _logicMap;
+        private LogicEntityManager _logicManager;
         private GameContext context;
 
         public List<Transform> Team1SpawnPoints;
@@ -35,30 +35,24 @@ namespace Game
             }
 
         }
-        public GameMap LogicMap
-        {
-            get
-            {
-                return _logicMap;
-            }
-        }
+        
         /// <summary>
         /// 本队球员
         /// </summary>
-        private List<ViewObj> _myTeamBoys = new List<ViewObj>();
+        private List<EntityView> _myTeamBoys = new List<EntityView>();
         /// <summary>
         /// GameObj id，ViewObj的映射
         /// </summary>
-        private Dictionary<int, ViewObj> _viewObjMap;
+        private Dictionary<int, EntityView> _viewObjMap;
 
-        public Dictionary<int, ViewObj> ViewObjMap
+        public Dictionary<int, EntityView> ViewObjMap
         {
             get
             {
                 return _viewObjMap;
             }
         }
-        public List<ViewObj> MyTeam
+        public List<EntityView> MyTeam
         {
             get
             {
@@ -71,8 +65,8 @@ namespace Game
         /// <summary>
         /// 当前控制对象
         /// </summary>
-        private ViewObj _curViewObj = null;
-        public ViewObj CurViewObj
+        private EntityView _curViewObj = null;
+        public EntityView CurViewObj
         {
             get
             {
@@ -83,12 +77,12 @@ namespace Game
                 _curViewObj = value;
                 //逻辑对象也更新
                 _curViewObj.gameObj = value.gameObj;
-                _logicMap.curObj = value.gameObj;
+                _logicManager.curObj = value.gameObj;
             }
         }
 
 
-        private List<ViewObj> viewOjbList = new List<ViewObj>();
+        private List<EntityView> viewOjbList = new List<EntityView>();
 
         /// <summary>
         /// 初始化
@@ -96,9 +90,9 @@ namespace Game
         public void Init()
         {
             context = new GameContext();
-            _logicMap = new GameMap();
-            viewOjbList = new List<ViewObj>();
-            _viewObjMap = new Dictionary<int, ViewObj>();
+            _logicManager = GlobalClient.GameManager.LogicManager;
+            viewOjbList = new List<EntityView>();
+            _viewObjMap = new Dictionary<int, EntityView>();
         }
 
         /// <summary>
@@ -107,11 +101,11 @@ namespace Game
         /// <param name="charData"></param>
         public void CreateViewObj(CharData charData, Vector3 Pos, Quaternion rotation)
         {
-            ViewObj obj = new ViewObj();
+            EntityView obj = new EntityView();
             obj.Create(charData, this, Pos, rotation);
             viewOjbList.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicMap.gameObjList.Add(obj.gameObj);
+            _logicManager.gameObjList.Add(obj.gameObj);
         }
 
         
@@ -122,13 +116,13 @@ namespace Game
         /// <param name="charData"></param>
         public void CreateMe(CharData charData, Vector3 Pos, Quaternion rotation)
         {
-            MeViewPlayer obj = new MeViewPlayer();
+            PlayerView obj = new PlayerView();
             obj.Create(charData, this, Pos, rotation);
             //obj.AddMoveController();
             viewOjbList.Add(obj);
             _myTeamBoys.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicMap.gameObjList.Add(obj.gameObj);
+            _logicManager.gameObjList.Add(obj.gameObj);
             CurViewObj = obj;
         }
 
@@ -140,7 +134,7 @@ namespace Game
         /// </summary>
         public void CreateSoccer()
         {
-            ViewSoccer obj = new ViewSoccer();
+            SoccerView obj = new SoccerView();
             
         }
 
@@ -150,11 +144,11 @@ namespace Game
         /// <param name="charData"></param>
         public void CreatePlayer(CharData charData, Vector3 Pos, Quaternion rotation)
         {
-            ViewPlayer obj = new ViewPlayer();
+            CreatureView obj = new CreatureView();
             obj.Create(charData, this,Pos, rotation);
             viewOjbList.Add(obj);
             ViewObjMap.Add(obj.ObjID, obj);
-            _logicMap.gameObjList.Add(obj.gameObj);
+            _logicManager.gameObjList.Add(obj.gameObj);
         }
 
         /// <summary>
@@ -172,16 +166,16 @@ namespace Game
             {
                 
                 CharData charData = new CharData(playStr[i]);
-                if (i == 0 && charData.roleId == LogicMap.curRoleId)
+                if (i == 0 && charData.roleId == GlobalClient.NetWorkManager.ClientID)
                 {
                     //主玩家主场
-                    GameManager.instance.viewMap._logicMap.isHostPlayer = true;
+                    _logicManager.isHostPlayer = true;
 
                 }
-                if(charData.roleId == LogicMap.curRoleId)
+                if (charData.roleId == GlobalClient.NetWorkManager.ClientID)
                 {
-                    
-                    if(GameManager.instance.viewMap._logicMap.isHostPlayer == true)
+
+                    if (_logicManager.isHostPlayer == true)
                     {
                         //创建自己
                         CreateMe(charData, Team1SpawnPoints[team1PlayerNum].position, Team1SpawnPoints[team1PlayerNum].rotation);
@@ -199,7 +193,7 @@ namespace Game
                 }
                 else
                 {
-                    if (GameManager.instance.viewMap._logicMap.isHostPlayer == true)
+                    if (_logicManager.isHostPlayer == true)
                     {
                         CreatePlayer(charData, Team2SpawnPoints[team2PlayerNum].position, Team2SpawnPoints[team2PlayerNum].rotation);
                         team2PlayerNum++;
@@ -219,9 +213,6 @@ namespace Game
         public void Update()
         {
 
-            GlobalClient.CommandManager.Update();
-            //逻辑层更新后
-            _logicMap.Update();
             //再更新视图对象
             for(int i = 0; i < viewOjbList.Count; ++i)
             {

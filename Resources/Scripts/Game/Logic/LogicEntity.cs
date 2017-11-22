@@ -7,9 +7,9 @@ namespace Game
     /// <summary>
     /// 游戏逻辑对象
     /// </summary>
-    public class GameObj 
+    public class LogicEntity 
     {
-        protected int Id = 10000;
+        protected int entityId = 10000;
         /// <summary>
         /// -1中立 1主场玩家  0 客场玩家
         /// </summary>
@@ -17,7 +17,7 @@ namespace Game
         protected Vector3 pos = Vector3.zero;
         protected Vector3 direction = Vector3.zero;
         protected Quaternion rotation;
-        protected GameMap _gameMap;
+        protected LogicEntityManager _gameMap;
         protected CharData _charData;
         private GameContext context;
         /// <summary>
@@ -25,7 +25,7 @@ namespace Game
         /// </summary>
         float m_speed;
 
-        public virtual void Init(CharData charData, GameMap gameMap)
+        public virtual void Init(CharData charData, LogicEntityManager gameMap)
         {
             context = new GameContext();
             _charData = charData;
@@ -34,7 +34,7 @@ namespace Game
             try
             {
                 //解析单位名字转换ID
-                Id = int.Parse(charData.name);
+                entityId = int.Parse(charData.name);
             }catch(Exception e)
             {
                 Debug.LogError(string.Format("Parse charData.Name to Integer Error! {0}",_charData.name));
@@ -46,7 +46,7 @@ namespace Game
         {
             get
             {
-                return Id;
+                return entityId;
             }
         }
 

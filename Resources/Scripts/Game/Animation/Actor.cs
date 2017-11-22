@@ -32,7 +32,7 @@ namespace Game
         public Animator animator;
         public Dictionary<string, AnimatorControllerParameter> defaultAnimationParamters;
 
-        public ViewPlayer viewObj;
+        public CreatureView viewObj;
         private GameContext context;
 
 

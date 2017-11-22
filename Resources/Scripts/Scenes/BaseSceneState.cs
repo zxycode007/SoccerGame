@@ -1,53 +1,58 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BaseSceneState 
+namespace Game
 {
-    protected string  m_sceneName;
-    protected ESceneState m_eState;
-    protected SceneController m_controller;
-    protected bool m_bRunning = false;
-    protected bool m_bLoaded = false;
 
-
-    public BaseSceneState(SceneController controller)
+    public class BaseSceneState
     {
-        m_controller = controller;
-        m_eState = ESceneState.E_SCENE_STATE_LOGIN;
-    }
+        protected string m_sceneName;
+        protected ESceneState m_eState;
+        protected SceneController m_controller;
+        protected bool m_bRunning = false;
+        protected bool m_bLoaded = false;
 
-    public string GetSceneName()
-    {
-        return m_sceneName;
-    }
 
-    public ESceneState GetESceneState()
-    {
-        return m_eState;
-    }
+        public BaseSceneState(SceneController controller)
+        {
+            m_controller = controller;
+            m_eState = ESceneState.E_SCENE_STATE_LOGIN;
+        }
 
-    public bool isLoaded()
-    {
-        return m_bLoaded;
-    }
+        public string GetSceneName()
+        {
+            return m_sceneName;
+        }
 
-    public bool isRunning()
-    {
-        return m_bRunning;
-    }
+        public ESceneState GetESceneState()
+        {
+            return m_eState;
+        }
 
-    public virtual void SceneStateBegin()
-    {
+        public bool isLoaded()
+        {
+            return m_bLoaded;
+        }
 
-    }
+        public bool isRunning()
+        {
+            return m_bRunning;
+        }
 
-    public virtual void SceneStateEnd()
-    {
+        public virtual void SceneStateBegin()
+        {
 
-    }
+        }
 
-    public virtual void SceneStateUpdate()
-    {
+        public virtual void SceneStateEnd()
+        {
 
+        }
+
+        public virtual void SceneStateUpdate()
+        {
+
+        }
     }
 }
+

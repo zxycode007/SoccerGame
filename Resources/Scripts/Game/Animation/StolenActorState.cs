@@ -7,7 +7,7 @@ namespace Game
     {
 
         // Use this for initialization
-        public StolenActorState(Player playerObj):base(playerObj)
+        public StolenActorState(CreatureEntity playerObj):base(playerObj)
         {
             m_stateName = "StolenActorState";
             m_state = ActorState.STOLEN;

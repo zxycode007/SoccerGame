@@ -6,14 +6,14 @@ namespace Game
     /// <summary>
     /// 当前玩家自身对象
     /// </summary>
-    public class MeViewPlayer : ViewPlayer
+    public class PlayerView : CreatureView
     {
 
-        public override void Create(CharData charData, ViewMap viewMap, Vector3 Pos, Quaternion rotation)
+        public override void Create(CharData charData, EntityViewManager viewMap, Vector3 Pos, Quaternion rotation)
         {
             _viewMap = viewMap;
-            gameObj = new MePlayer();
-            gameObj.Init(charData, viewMap.LogicMap);
+            gameObj = new PlayerEntity();
+            gameObj.Init(charData, GlobalClient.GameManager.LogicManager);
              
             GameObject obj = GlobalClient.prefabData["PlayerActor1"];
             gameGo = GameObject.Instantiate(obj, Pos, rotation) as GameObject;
