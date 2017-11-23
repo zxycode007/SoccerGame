@@ -62,7 +62,7 @@ namespace Game
         {
             InputData inputInfo = GlobalClient.GetPlayerController().GetPlayerInputData();
             //本地操作的关键帧数据
-            KeyFrame kf = new KeyFrame(GlobalClient.NetWorkManager.ClientID,LogicManager.curObj.ID, Convert.ToByte(inputInfo.bMoved), Convert.ToByte(inputInfo.shootPower), Convert.ToByte(inputInfo.passPower), Convert.ToByte(inputInfo.stolenPower), inputInfo.angle.ToString());
+            KeyFrame kf = new KeyFrame(GlobalClient.NetWorkManager.ClientID,LogicManager.playerEntity.ID, Convert.ToByte(inputInfo.bMoved), Convert.ToByte(inputInfo.shootPower), Convert.ToByte(inputInfo.passPower), Convert.ToByte(inputInfo.stolenPower), inputInfo.angle.ToString());
             //把当前操作的关键帧数据发给服务器
             GlobalClient.NetWorkManager.SendKeyFrameData(kf);
         }

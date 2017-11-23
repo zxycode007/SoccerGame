@@ -15,7 +15,10 @@ namespace Game
         public bool isHostPlayer = false;
         //游戏对象列表
         public List<LogicEntity> entities = new List<LogicEntity>();
-        public LogicEntity curObj;
+        //不可操作AI列表
+        public List<LogicEntity> aiList = new List<LogicEntity>();
+        //当前玩家控制实体
+        public LogicEntity playerEntity;
         private GameContext context;
 
         
@@ -43,11 +46,11 @@ namespace Game
         }
 
         /// <summary>
-        /// 获取玩家控制对象
+        /// 通过ID获取实体
         /// </summary>
-        /// <param name="ID">玩家对象ID</param>
+        /// <param name="ID">实体ID</param>
         /// <returns></returns>
-        public LogicEntity GetPlayerObj(int id)
+        public LogicEntity GetEntityByID(int id)
         {
             for (int i = 0; i < entities.Count; ++i)
             {
@@ -59,6 +62,21 @@ namespace Game
             return null;
         }
 
+        /// <summary>
+        /// 本地玩家控制实体
+        /// </summary>
+        public LogicEntity PlayerLogicEntity
+        {
+            get
+            {
+                return playerEntity;
+            }
+            set
+            {
+                playerEntity = value;
+            }
+        }
+
         public void DoCmd(Cmd cmd, string param, int roleId)
         {
             switch(cmd)
@@ -66,7 +84,7 @@ namespace Game
                 case Cmd.UseSkill:
                     for (int i = 0; i < entities.Count; ++i)
                     {
-                        if(entities[i].mCharData.roleId == roleId)
+                        if(entities[i].mCharData.clientID == roleId)
                         {
                             (entities[i] as CreatureEntity).DoSkill(int.Parse(param));
                         }
@@ -81,7 +99,7 @@ namespace Game
                         for(int i=0; i<entities.Count; i++)
                         {
                             //单位名字和玩家ID要对应上
-                            if(entities[i].mCharData.roleId == roleId && entities[i].mCharData.name == param)
+                            if(entities[i].mCharData.clientID == roleId && entities[i].mCharData.entityName == param)
                             {
                                 if (GlobalClient.GameManager.ViewManager.ViewObjMap.ContainsKey(entities[i].ID))
                                 {
@@ -101,7 +119,7 @@ namespace Game
                         for (int i = 0; i < entities.Count; i++)
                         {
                             //单位名字和玩家ID要对应上
-                            if (entities[i].mCharData.roleId == roleId && entities[i].mCharData.name == param)
+                            if (entities[i].mCharData.clientID == roleId && entities[i].mCharData.entityName == param)
                             {
 
                                 if (GlobalClient.GameManager.ViewManager.ViewObjMap.ContainsKey(entities[i].ID))

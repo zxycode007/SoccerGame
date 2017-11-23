@@ -114,7 +114,7 @@ namespace Game
                 UnitMoveEndEvtArg arg = new UnitMoveEndEvtArg();
                 arg.actor = actor;
                 context.FireEvent(this, EventType.EVT_UNIT_MOVE_END, arg);
-                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveEnd, actor.viewObj.gameObj.mCharData.name);
+                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveEnd, actor.viewObj.gameObj.mCharData.entityName);
             }
 
 
@@ -131,7 +131,7 @@ namespace Game
                 UnitMoveBeginEvtArg arg = new UnitMoveBeginEvtArg();
                 arg.actor = actor;
                 context.FireEvent(this, EventType.EVT_UNIT_MOVE_BEGIN, arg);
-                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveBegin, actor.viewObj.gameObj.mCharData.name);
+                GlobalClient.GameManager.LogicManager.InputCmd(Cmd.UnitMoveBegin, actor.viewObj.gameObj.mCharData.entityName);
             }
 
         }
@@ -159,21 +159,21 @@ namespace Game
                     Debug.Log("点击Player" + obj.name);
                     if(GlobalClient.GameManager.IsHostPlayer())
                     {
-                        if(actor.viewObj.gameObj.teamNo == 1)
+                        if(actor.viewObj.gameObj.campType == ECampType.Red)
                         {
                             target = hit.transform;
                             moveSpeed = actor.speed;
                             GlobalClient.GameManager.ViewManager.CurViewObj = actor.viewObj;
-                            Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.teamNo, obj.name));
+                            Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.campType, obj.name));
                         }
                     }else
                     {
-                        if (actor.viewObj.gameObj.teamNo == 0)
+                        if (actor.viewObj.gameObj.campType == ECampType.Blue)
                         {
                             target = hit.transform;
                             moveSpeed = actor.speed;
                             GlobalClient.GameManager.ViewManager.CurViewObj = actor.viewObj;
-                            Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.teamNo, obj.name));
+                            Debug.Log(string.Format("点击teamNo{0}, PlayerName;{1}", actor.viewObj.gameObj.campType, obj.name));
                         }
                     }
                     

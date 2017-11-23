@@ -23,15 +23,15 @@ namespace Game
             if (Game.GameManager.instance.IsHostPlayer())
             {
                 actor.SetMaterial(false, false);
-                gameObj.teamNo = 0;
+                gameObj.campType = ECampType.Red;
             }
             else
             {
                 actor.SetMaterial(true, false);
-                gameObj.teamNo = 1;
+                gameObj.campType = ECampType.Blue;
                  
             }
-            gameGo.name = charData.name;
+            gameGo.name = charData.entityName;
             gameTrans = gameGo.transform;
             gameObj.Position = gameTrans.position;
             gameObj.Direction = gameTrans.forward;

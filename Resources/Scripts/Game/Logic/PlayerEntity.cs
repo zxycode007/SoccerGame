@@ -8,7 +8,7 @@ namespace Game
         public override void Init(CharData charData, LogicEntityManager gameMap)
         {
             base.Init(charData, gameMap);
-            _gameMap.curObj = this;
+            GlobalClient.GameManager.LogicManager.playerEntity = this;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Game
             //gameGo = GameObject.CreatePrimitive(PrimitiveType.Cube);
             GameObject obj = GlobalClient.prefabData["PlayerActor1"];
             gameGo = GameObject.Instantiate(obj, Pos, rotation) as GameObject;
-            gameGo.name = charData.name;
+            gameGo.name = charData.entityName;
             gameTrans = gameGo.transform;
             context = new GameContext();
         }
@@ -44,7 +44,7 @@ namespace Game
                 {
                     return -1;
                 }
-                return gameObj.mCharData.roleId;
+                return gameObj.mCharData.clientID;
             }
         }
 

@@ -18,7 +18,7 @@ namespace Game
             GameObject sp = GameObject.Find("SpawnPoint2");
             gameGo = GameObject.Instantiate(obj, sp.transform.position, sp.transform.rotation) as GameObject;
 
-            gameGo.name = charData.name;
+            gameGo.name = charData.entityName;
             gameTrans = gameGo.transform;
         }
     }

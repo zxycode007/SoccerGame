@@ -17,18 +17,18 @@ namespace Game
              
             GameObject obj = GlobalClient.prefabData["PlayerActor1"];
             gameGo = GameObject.Instantiate(obj, Pos, rotation) as GameObject;
-            gameGo.name = charData.name;
+            gameGo.name = charData.entityName;
             gameTrans = gameGo.transform;
             actor = gameGo.GetComponent<Actor>();
             actor.viewObj = this;
             if(GameManager.instance.IsHostPlayer())
             {
                 actor.SetMaterial(true, false);
-                gameObj.teamNo = 1;
+                gameObj.campType = ECampType.Red;
             }else
             {
                 actor.SetMaterial(false, false);
-                gameObj.teamNo = 0;
+                gameObj.campType = ECampType.Blue;
             }
             gameObj.Position = gameTrans.position;
             gameObj.Direction = gameTrans.forward;

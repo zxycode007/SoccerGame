@@ -77,7 +77,7 @@ namespace Game
                 _curViewObj = value;
                 //逻辑对象也更新
                 _curViewObj.gameObj = value.gameObj;
-                _logicManager.curObj = value.gameObj;
+                _logicManager.playerEntity = value.gameObj;
             }
         }
 
@@ -166,13 +166,13 @@ namespace Game
             {
                 
                 CharData charData = new CharData(playStr[i]);
-                if (i == 0 && charData.roleId == GlobalClient.NetWorkManager.ClientID)
+                if (i == 0 && charData.clientID == GlobalClient.NetWorkManager.ClientID)
                 {
                     //主玩家主场
                     _logicManager.isHostPlayer = true;
 
                 }
-                if (charData.roleId == GlobalClient.NetWorkManager.ClientID)
+                if (charData.clientID == GlobalClient.NetWorkManager.ClientID)
                 {
 
                     if (_logicManager.isHostPlayer == true)
@@ -189,7 +189,7 @@ namespace Game
                     
                    
                     //如果第一个玩家是自己，则为主控玩家，发送足球信息
-                    Debug.Log(string.Format("创建玩家自己,玩家Name:{0}",charData.name));
+                    Debug.Log(string.Format("创建玩家自己,玩家Name:{0}",charData.entityName));
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace Game
                     }
                     //创建别人
                     
-                    Debug.Log(string.Format("创建别人,玩家Name:{0}", charData.name));
+                    Debug.Log(string.Format("创建别人,玩家Name:{0}", charData.entityName));
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace Game
             Vector3 cAngle = new Vector3(angleX, angleY, angleZ);
             for(int i =0; i < viewOjbList.Count; i++)
             {
-                if (viewOjbList[i].gameObj.mCharData.roleId == roleId && viewOjbList[i].gameObj.ID==gameObjID)
+                if (viewOjbList[i].gameObj.mCharData.clientID == roleId && viewOjbList[i].gameObj.ID==gameObjID)
                 {
                     viewOjbList[i].Pos = cPos;
                     viewOjbList[i].EulerAngles = cAngle;

@@ -11,14 +11,15 @@ namespace Game
     {
         protected int entityId = 10000;
         /// <summary>
-        /// -1中立 1主场玩家  0 客场玩家
+        /// 阵营 红，蓝，中立
         /// </summary>
-        public int teamNo = -1;
+        public ECampType campType = ECampType.None;
         protected Vector3 pos = Vector3.zero;
         protected Vector3 direction = Vector3.zero;
         protected Quaternion rotation;
-        protected LogicEntityManager _gameMap;
         protected CharData _charData;
+        //实体名字
+        protected string name;
         private GameContext context;
         /// <summary>
         /// 速度
@@ -29,15 +30,16 @@ namespace Game
         {
             context = new GameContext();
             _charData = charData;
-            _gameMap = gameMap;
-            //Id = charData.roleId;
+
+            //从服务器发来创建实体名字
+            name = _charData.entityName;
             try
             {
                 //解析单位名字转换ID
-                entityId = int.Parse(charData.name);
+                entityId = int.Parse(charData.entityName);
             }catch(Exception e)
             {
-                Debug.LogError(string.Format("Parse charData.Name to Integer Error! {0}",_charData.name));
+                Debug.LogError(string.Format("Parse charData.Name to Integer Error! {0}",_charData.entityName));
             }
             
         }
@@ -47,6 +49,21 @@ namespace Game
             get
             {
                 return entityId;
+            }
+        }
+
+        /// <summary>
+        /// 逻辑实体名
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
             }
         }
 

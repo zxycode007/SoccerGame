@@ -260,10 +260,10 @@ namespace Game
                     break;
                     //位置同步
                 case cProto.SYNC_POS:
-                    int cRoleId = msg.ReadInt();
-                    int gameObjID = msg.ReadInt();
+                    int clientId = msg.ReadInt();
+                    int entityId = msg.ReadInt();
                     string pos = msg.ReadString();
-                    GameManager.instance.ViewManager.SyncPos(cRoleId, pos, gameObjID);
+                    GameManager.instance.ViewManager.SyncPos(clientId, pos, entityId);
                     //Debug.Log(string.Format("玩家 {0} ,pos = {1}", cRoleId ,pos));
                     break;
                     //同步关键帧k

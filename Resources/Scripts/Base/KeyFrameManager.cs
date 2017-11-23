@@ -282,7 +282,7 @@ namespace Game
                     //移动
                     for (int j = 0; j < GlobalClient.GameManager.LogicManager.entities.Count; ++j)
                     {
-                        if (GlobalClient.GameManager.LogicManager.entities[j].mCharData.roleId == kf.ClientID)
+                        if (GlobalClient.GameManager.LogicManager.entities[j].mCharData.clientID == kf.ClientID)
                         {
                             //(GlobalClient.GameManager.viewMap.LogicMap.gameObjList[i] as Player).DoSkill(int.Parse(param));
                             string msg = string.Format("isMoved{0}, shotPower{1}, passPower{2}, stolenPower{3}, angle{4}", kf.isMoved, kf.ShotPower, kf.PassPower, kf.StolenPower, kf.OtherParam);

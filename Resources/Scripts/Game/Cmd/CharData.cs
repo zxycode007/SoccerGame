@@ -10,8 +10,8 @@ namespace Game
     /// </summary>
     public class CharData
     {
-        public int roleId;
-        public string name;
+        public int clientID;
+        public string entityName;
 
         /// <summary>
         /// 用#拆分，第一个用户ID，第二个用户名
@@ -20,8 +20,8 @@ namespace Game
         public CharData(string str)
         {
             string[] playStr = str.Split('#');
-            roleId = int.Parse(playStr[0]);
-            name = playStr[1];
+            clientID = int.Parse(playStr[0]);
+            entityName = playStr[1];
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace Game
         /// <returns></returns>
         public override string ToString()
         {
-            string str = roleId + "#" + name;
+            string str = clientID + "#" + entityName;
             return str;
         }
     }
