@@ -22,6 +22,10 @@ public class HeapNode<T> where T : new()
         {
             return v;
         }
+        set
+        {
+            v = value;
+        }
     }
 
 

@@ -48,6 +48,7 @@ public class KeyedPriorityQueue<K, V, P> where V : class
 
     public void Enqueue(K key, V value, P priority)
     {
+        //取heap的下标1的元素，否则默认构造一个
         V local = (this.size > 0) ? this.heap[1].Value : default(V);
         int num = ++this.size;
         int num2 = num / 2;
